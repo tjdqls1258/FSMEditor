@@ -1,0 +1,102 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-6789997587696447579
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 438af94739a6767449c4fdd493035f22, type: 3}
+  m_Name: DebugState
+  m_EditorClassIdentifier: 
+  guid: 9fa9b36252f9c8545a348ee056b21384
+  position: {x: 582.3999, y: 224.80002}
+  transitionList: []
+  message: 
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: baa3b805d7b0e034794cb6a14f871787, type: 3}
+  m_Name: FSM
+  m_EditorClassIdentifier: 
+  root: {fileID: 7522797386459159806}
+  isRun: 0
+  states:
+  - {fileID: 3426030327328244716}
+  - {fileID: -6789997587696447579}
+  transitions:
+  - {fileID: 2506246963708880637}
+  - {fileID: 5551811169006609}
+--- !u!114 &5551811169006609
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 224674835c7a0194c90e05afd2c53854, type: 3}
+  m_Name: WaitTransition
+  m_EditorClassIdentifier: 
+  guid: 647d7ff93cee04d418a33becd83ee535
+  position: {x: 310.40002, y: 363.19998}
+  nextState: {fileID: -6789997587696447579}
+  duration: 1
+--- !u!114 &2506246963708880637
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 224674835c7a0194c90e05afd2c53854, type: 3}
+  m_Name: WaitTransition
+  m_EditorClassIdentifier: 
+  guid: 860aaa38c86991c469b59e74b8381c30
+  position: {x: 392.79996, y: 124.80002}
+  nextState: {fileID: -6789997587696447579}
+  duration: 1
+--- !u!114 &3426030327328244716
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 438af94739a6767449c4fdd493035f22, type: 3}
+  m_Name: DebugState
+  m_EditorClassIdentifier: 
+  guid: 423cd739e6d4a6840b128ff8c33a31f1
+  position: {x: 174.40002, y: 100.8}
+  transitionList:
+  - {fileID: 5551811169006609}
+  message: 
+--- !u!114 &7522797386459159806
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9cb4d5f88fb05404d91eba3969f82bd3, type: 3}
+  m_Name: FSMRoot
+  m_EditorClassIdentifier: 
+  guid: 2760dab9fcbdffc46aa3157ef8a6be82
+  position: {x: 2.399994, y: 24}
+  startState: {fileID: 3426030327328244716}
