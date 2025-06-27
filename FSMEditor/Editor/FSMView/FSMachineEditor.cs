@@ -12,11 +12,11 @@ namespace FSMEditor
         InspectorView inspectorView;
         const string EditorPath = "Assets/FSMEditor/Editor/FSMView/FSMEditor";
 
-        [MenuItem("Tools/BehaviourTreeEditor")]
+        [MenuItem("Tools/FSMEditor")]
         public static void ShowExample()
         {
             FSMachineEditor wnd = GetWindow<FSMachineEditor>();
-            wnd.titleContent = new GUIContent("BehaviourTreeEditor");
+            wnd.titleContent = new GUIContent("FSMEditor");
         }
 
         public void CreateGUI()
