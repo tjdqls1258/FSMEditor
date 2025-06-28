@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
+using System;
+
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -11,19 +13,21 @@ namespace FSMEditor
     public class FSMachine : ScriptableObject
     {
         [HideInInspector] public FSMRoot root;
-        protected FSMState currentState;
+        protected FSMState m_currentState;
+        public List<FSMState> states = new();
+        public List<FSMTransition> transitions = new();
 
         [HideInInspector] public bool isRun = false;
         public void StartMachine()
         {
             isRun = true;
-            currentState = root.StartRoot();
-            currentState.Enter();
+            m_currentState = root.StartRoot();
+            m_currentState.Enter();
         }
 
         public void Update()
         {
-            currentState = currentState.Excute();
+            m_currentState = m_currentState.Excute();
         }
 
         public FSMachine Clone()
@@ -32,9 +36,17 @@ namespace FSMEditor
             machine.root = root.Clone();
             return machine;
         }
+
+        public List<FSMState> FindState(Type type)
+        {
+            return states.FindAll(x => x.GetType() == type);
+        }
+
+        public List<FSMTransition> FindTransition(Type type)
+        {
+            return transitions.FindAll(x => x.GetType() == type);
+        }
 #if UNITY_EDITOR
-        public List<FSMState> states = new();
-        public List<FSMTransition> transitions = new();
         public FSMState CreateState(System.Type type)
         {
             FSMState state = ScriptableObject.CreateInstance(type) as FSMState;
