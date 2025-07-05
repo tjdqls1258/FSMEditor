@@ -9,9 +9,10 @@ namespace FSMEditor
 #if UNITY_EDITOR
         [HideInInspector] public string guid;
         [HideInInspector] public Vector2 position;
+        [TextArea] public string description;
 #endif
-
-        public List<FSMTransition> transitionList = new();
+        [HideInInspector] public BlackBoard blackboard;
+        [HideInInspector] public List<FSMTransition> transitionList = new();
         bool enterDone = false;
         public virtual void Enter()
         {

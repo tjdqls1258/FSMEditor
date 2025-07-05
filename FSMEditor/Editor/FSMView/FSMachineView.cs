@@ -7,6 +7,7 @@ using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UIElements;
+using static UnityEditor.VersionControl.Asset;
 
 namespace FSMEditor
 {
@@ -32,6 +33,14 @@ namespace FSMEditor
 
             var styleSheet = AssetDatabase.LoadAssetAtPath<StyleSheet>(SHEET_PATH);
             styleSheets.Add(styleSheet);
+
+            Undo.undoRedoPerformed += OnUndoRedo;
+        }
+
+        private void OnUndoRedo()
+        {
+            PopulateView(machine);
+            AssetDatabase.SaveAssets();
         }
 
         StateNode FindStateNodeView(FSMState node)
@@ -209,7 +218,14 @@ namespace FSMEditor
         {
             //base.BuildContextualMenu(evt);
             if (machine == null) return;
-            evt.menu.AppendAction("Delete", (a) => DeleteSelection());
+            evt.menu.AppendAction("Delete", (a) => 
+            {
+                if (selection.Any(x => x is RootNode))
+                {
+                    selection.RemoveAll(x=> x is RootNode);
+                }
+                DeleteSelection();
+            });
 
             {
                 var types = TypeCache.GetTypesDerivedFrom<FSMTransition>();
@@ -250,6 +266,7 @@ namespace FSMEditor
         void CreateNodeView(FSMRoot root)
         {
             RootNode fsmState = new RootNode(root);
+            fsmState.focusable = false;
             AddElement(fsmState);
         }
 
@@ -263,6 +280,23 @@ namespace FSMEditor
             TransitionNode fsmState = new TransitionNode(tr);
             fsmState.OnNodeSelected = OnTransitionNodeSelected;
             AddElement(fsmState);
+        }
+
+        public void UpdateNodeState()
+        {
+            if (Application.isPlaying == false) return;
+            if (machine == null || machine.GetCurrentState() == null) return;
+            nodes.ForEach((x) =>
+            {
+                StateNode state = x as StateNode;
+                if (state != null)
+                {
+                    if (state.state.guid == machine.GetCurrentState().guid)
+                        state.RunState();
+                    else
+                        state.NotRunState();
+                }
+            });
         }
     }
 }

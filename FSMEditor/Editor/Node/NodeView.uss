@@ -1,0 +1,161 @@
+#node-border {
+    background-color: rgb(56, 56, 56);
+    border-top-width: 1px;
+    border-right-width: 1px;
+    border-bottom-width: 1px;
+    border-left-width: 1px;
+    border-left-color: rgb(0, 0, 0);
+    border-right-color: rgb(0, 0, 0);
+    border-top-color: rgb(0, 0, 0);
+    border-bottom-color: rgb(0, 0, 0);
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+    min-width: auto;
+}
+
+#input {
+    width: auto;
+    flex-wrap: nowrap;
+    align-content: auto;
+    align-items: auto;
+    max-width: none;
+    min-width: 50%;
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    border-left-color: rgb(0, 0, 0);
+    border-right-color: rgb(0, 0, 0);
+    border-top-color: rgb(0, 0, 0);
+    border-bottom-color: rgb(0, 0, 0);
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    background-color: rgba(103, 103, 103, 0.81);
+}
+
+#output {
+    flex-wrap: nowrap;
+    align-content: flex-start;
+    min-width: 50%;
+    background-color: rgba(56, 56, 56, 0.78);
+    border-left-color: rgb(0, 0, 0);
+    border-right-color: rgb(0, 0, 0);
+    border-top-color: rgb(0, 0, 0);
+    border-bottom-color: rgb(0, 0, 0);
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+#top {
+    border-top-color: rgb(0, 0, 0);
+    border-top-width: 1px;
+    background-color: rgba(0, 0, 0, 0);
+    border-left-color: rgb(0, 0, 0);
+    border-right-color: rgb(0, 0, 0);
+    border-bottom-color: rgb(0, 0, 0);
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+#description-label {
+    -unity-font-style: normal;
+    color: rgb(255, 255, 255);
+    font-size: 12px;
+}
+
+#selection-border {
+    background-color: rgba(0, 154, 226, 0);
+    border-left-color: rgba(0, 155, 240, 0);
+    border-right-color: rgba(0, 155, 240, 0);
+    border-top-color: rgba(0, 155, 240, 0);
+    border-bottom-color: rgba(0, 155, 240, 0);
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    position: absolute;
+    border-top-width: 1px;
+    border-right-width: 1px;
+    border-bottom-width: 1px;
+    border-left-width: 1px;
+}
+
+:hover > #selection-border {
+    border-left-color: rgb(0, 155, 240);
+    border-right-color: rgb(0, 155, 240);
+    border-top-color: rgb(0, 155, 240);
+    border-bottom-color: rgb(0, 155, 240);
+    border-top-width: 1px;
+    border-right-width: 1px;
+    border-bottom-width: 1px;
+    border-left-width: 1px;
+}
+
+:selected > #selection-border {
+    border-left-color: rgb(0, 155, 240);
+    border-right-color: rgb(0, 155, 240);
+    border-top-color: rgb(0, 155, 240);
+    border-bottom-color: rgb(0, 155, 240);
+    border-top-width: 1px;
+    border-right-width: 1px;
+    border-bottom-width: 1px;
+    border-left-width: 1px;
+}
+
+:hover:selected > #selection-border {
+    border-top-width: 2px;
+    border-right-width: 2px;
+    border-bottom-width: 2px;
+    border-left-width: 2px;
+    border-left-color: rgb(0, 155, 240);
+    border-right-color: rgb(0, 155, 240);
+    border-top-color: rgb(0, 155, 240);
+    border-bottom-color: rgb(0, 155, 240);
+}
+
+.node {
+    min-width: 150px;
+}
+
+.transition #main-Top {
+    background-color: rgb(102, 198, 255);
+}
+
+.state #main-Top {
+    background-color: rgb(255, 105, 105);
+}
+
+.root #main-Top {
+    background-color: rgb(0, 0, 0);
+}
+
+#node-state {
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0);
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+
+.currentState #node-state {
+    background-color: rgb(103, 255, 0);
+}

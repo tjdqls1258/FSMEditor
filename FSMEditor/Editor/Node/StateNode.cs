@@ -1,7 +1,10 @@
 #if UNITY_EDITOR
 using System;
+using UnityEditor;
 using UnityEditor.Experimental.GraphView;
+using UnityEditor.UIElements;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace FSMEditor
 {
@@ -12,7 +15,7 @@ namespace FSMEditor
         public Port inport;
         public Port outport;
 
-        public StateNode(FSMState state)
+        public StateNode(FSMState state) : base("Assets/FSMEditor/Editor/Node/NodeView.uxml")
         {
             focusable = true;
             this.state = state;
@@ -24,6 +27,16 @@ namespace FSMEditor
 
             CreateInputPorts();
             CreateOutPorts();
+            SetipClasses();
+
+            Label description = this.Q<Label>("description-label");
+            description.bindingPath = "description";
+            description.Bind(new SerializedObject(state));
+        }
+
+        private void SetipClasses()
+        {
+            AddToClassList("state");
         }
 
         private void CreateOutPorts()
@@ -55,9 +68,12 @@ namespace FSMEditor
         public override void SetPosition(Rect newPos)
         {
             base.SetPosition(newPos);
+            Undo.RecordObject(state, "FSM Editor (Set Position)");
             state.position.x = newPos.x;
             state.position.y = newPos.y;
+            EditorUtility.SetDirty(state);
         }
+
         public override void OnSelected()
         {
             base.OnSelected();
@@ -65,6 +81,16 @@ namespace FSMEditor
             {
                 OnNodeSelected.Invoke(this);
             }
+        }
+
+        public void NotRunState()
+        {
+            RemoveFromClassList("currentState");
+        }
+
+        public void RunState()
+        {
+            AddToClassList("currentState");
         }
     }
 }

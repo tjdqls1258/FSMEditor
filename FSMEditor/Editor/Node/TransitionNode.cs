@@ -1,6 +1,8 @@
 #if UNITY_EDITOR
 using System;
+using UnityEditor;
 using UnityEditor.Experimental.GraphView;
+using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -13,7 +15,7 @@ namespace FSMEditor
         public Port inport;
         public Port outport;
 
-        public TransitionNode(FSMTransition transition)
+        public TransitionNode(FSMTransition transition) : base("Assets/FSMEditor/Editor/Node/NodeView.uxml")
         {
             focusable = true;
             this.transition = transition;
@@ -25,6 +27,16 @@ namespace FSMEditor
 
             CreateInputPorts();
             CreateOutPorts();
+            SetipClasses();
+
+            Label description = this.Q<Label>("description-label");
+            description.bindingPath = "description";
+            description.Bind(new SerializedObject(transition));
+        }
+
+        private void SetipClasses()
+        {
+            AddToClassList("transition");
         }
 
         private void CreateOutPorts()
@@ -54,8 +66,10 @@ namespace FSMEditor
         public override void SetPosition(Rect newPos)
         {
             base.SetPosition(newPos);
+            Undo.RecordObject(transition, "FSM Editor (Set Position)");
             transition.position.x = newPos.x;
             transition.position.y = newPos.y;
+            EditorUtility.SetDirty(transition);
         }
         public override void OnSelected()
         {

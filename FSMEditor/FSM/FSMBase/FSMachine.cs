@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using UnityEngine.Windows;
+
 
 
 #if UNITY_EDITOR
@@ -16,7 +18,7 @@ namespace FSMEditor
         protected FSMState m_currentState;
         public List<FSMState> states = new();
         public List<FSMTransition> transitions = new();
-
+        public BlackBoard blackBoard = new();
         [HideInInspector] public bool isRun = false;
         public void StartMachine()
         {
@@ -27,14 +29,41 @@ namespace FSMEditor
 
         public void Update()
         {
-            m_currentState = m_currentState.Excute();
+            if(isRun)
+                m_currentState = m_currentState.Excute();
         }
+
+        public void Travers(Action<FSMRoot, FSMState, FSMTransition> action)
+        {
+            action.Invoke(root, null, null);
+            states.ForEach(x=> action.Invoke(null, x, null));
+            transitions.ForEach(t=> action.Invoke(null, null, t));
+        }
+
 
         public FSMachine Clone()
         {
             FSMachine machine = Instantiate(this);
             machine.root = root.Clone();
+            machine.states = states.ConvertAll<FSMState>(s => s.Clone());
+            machine.transitions = transitions.ConvertAll<FSMTransition>(t => t.Clone());
             return machine;
+        }
+
+        //필요시 값 추가
+        public void Bind()
+        {
+            Travers((r, s, t) =>
+            {
+                if(s != null)
+                {
+                    s.blackboard = blackBoard;
+                }
+                if(t != null)
+                {
+                    t.blackBoard = blackBoard;
+                }
+            });
         }
 
         public List<FSMState> FindState(Type type)
@@ -52,9 +81,16 @@ namespace FSMEditor
             FSMState state = ScriptableObject.CreateInstance(type) as FSMState;
             state.name = type.Name;
             state.guid = GUID.Generate().ToString();
+
+            Undo.RecordObject(this, "FSM Editor (AddState)");
             states.Add(state);
 
-            AssetDatabase.AddObjectToAsset(state, this);
+            if(!Application.isPlaying)
+            {
+                AssetDatabase.AddObjectToAsset(state, this);
+            }
+            
+            Undo.RegisterCreatedObjectUndo(state, "FSM Editor (AddState)");
             AssetDatabase.SaveAssets();
             return state;
         }
@@ -66,7 +102,11 @@ namespace FSMEditor
             state.guid = GUID.Generate().ToString();
             root = state;
 
-            AssetDatabase.AddObjectToAsset(state, this);
+            if (!Application.isPlaying)
+            {
+                AssetDatabase.AddObjectToAsset(state, this);
+            }
+
             AssetDatabase.SaveAssets();
             return state;
         }
@@ -76,89 +116,76 @@ namespace FSMEditor
             FSMTransition transition = ScriptableObject.CreateInstance(type) as FSMTransition;
             transition.name = type.Name;
             transition.guid = GUID.Generate().ToString();
+
+            Undo.RecordObject(this, "FSM Editor (AddTransition)");
             transitions.Add(transition);
 
             AssetDatabase.AddObjectToAsset(transition, this);
+            Undo.RegisterCreatedObjectUndo(transition, "FSM Editor (AddTransition)");
             AssetDatabase.SaveAssets();
             return transition;
         }
 
         public void DeleteNode(FSMState state)
         {
+            Undo.RecordObject(this, "FSM Editor (DeleteState)");
             states.Remove(state);
 
-            AssetDatabase.RemoveObjectFromAsset(state);
+            //AssetDatabase.RemoveObjectFromAsset(state);
+            Undo.DestroyObjectImmediate(state);
             AssetDatabase.SaveAssets();
         }
         public void DeleteNode(FSMTransition transition)
         {
+            Undo.RecordObject(this, "FSM Editor (DeleteTransition)");
             transitions.Remove(transition);
 
-            AssetDatabase.RemoveObjectFromAsset(transition);
+            //AssetDatabase.RemoveObjectFromAsset(transition);
+
+            Undo.DestroyObjectImmediate(transition);
             AssetDatabase.SaveAssets();
         }
 
         public void AddChild(FSMState input, FSMTransition output)
         {
+            Undo.RecordObject(input, "FSM Editor (AddChild)");
             input.transitionList.Add(output);
+            EditorUtility.SetDirty(input);
         }
 
         public void AddChild(FSMRoot input, FSMState output)
         {
+            Undo.RecordObject(input, "FSM Editor (AddChild)");
             input.startState = output;
-        }
-
-        public void RemoveChild(FSMState input, FSMTransition output)
-        {
-            input.transitionList.Remove(output);
-            //DecoratorNode decorator = parent as DecoratorNode;
-            //if (decorator)
-            //{
-            //    decorator.child = null;
-            //}
-
-            //RootNode rootNode = parent as RootNode;
-            //if (rootNode)
-            //{
-            //    rootNode.child = null;
-            //}
-
-            //CompositeNode composite = parent as CompositeNode;
-            //if (composite)
-            //{
-            //    composite.children.Remove(child);
-            //}
+            EditorUtility.SetDirty(input);
         }
 
         public void AddChild(FSMTransition input, FSMState output)
         {
+            Undo.RecordObject(input, "FSM Editor (AddChild)");
             input.nextState = output;
-            //DecoratorNode decorator = parent as DecoratorNode;
-            //if (decorator)
-            //{
-            //    decorator.child = child;
-            //}
+            EditorUtility.SetDirty(input);
+        }
 
-            //RootNode rootNode = parent as RootNode;
-            //if (rootNode)
-            //{
-            //    rootNode.child = child;
-            //}
-
-            //CompositeNode composite = parent as CompositeNode;
-            //if (composite)
-            //{
-            //    composite.children.Add(child);
-            //}
+        public void RemoveChild(FSMState input, FSMTransition output)
+        {
+            Undo.RecordObject(input, "FSM Editor (RemoveChild)");
+            input.transitionList.Remove(output);
+            EditorUtility.SetDirty(input);
         }
 
         public void RemoveChild(FSMTransition input, FSMState output)
         {
+            Undo.RecordObject(input, "FSM Editor (RemoveChild)");
             input.nextState = null;
+            EditorUtility.SetDirty(input);
         }
+
         public void RemoveChild(FSMRoot input, FSMState output)
         {
+            Undo.RecordObject(input, "FSM Editor (RemoveChild)");
             input.startState = null;
+            EditorUtility.SetDirty(input);
         }
 
         public List<FSMTransition> GetChildren(FSMState parent)
@@ -174,6 +201,11 @@ namespace FSMEditor
             children.Add(parent.nextState);
 
             return children;
+        }
+
+        public FSMState GetCurrentState()
+        {
+            return m_currentState;
         }
 #endif
     }

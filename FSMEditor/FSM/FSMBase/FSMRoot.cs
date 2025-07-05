@@ -9,7 +9,7 @@ namespace FSMEditor
         [HideInInspector] public Vector2 position;
 #endif
 
-        public FSMState startState;
+        [HideInInspector] public FSMState startState;
 
 
         public FSMState StartRoot()

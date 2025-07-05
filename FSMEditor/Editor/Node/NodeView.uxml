@@ -1,0 +1,37 @@
+<UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
+    <Style src="project://database/Assets/FSMEditor/Editor/Node/NodeView.uss?fileID=7433441132597879392&amp;guid=8e2d0309f8ed2b04297d33f38b0a4af2&amp;type=3#NodeView" />
+    <ui:VisualElement name="node-state" style="flex-grow: 1;" />
+    <ui:VisualElement name="node-border" style="background-color: rgba(56, 56, 56, 0);">
+        <ui:VisualElement name="main-Top" style="flex-grow: 1; min-height: 20px;" />
+        <ui:VisualElement name="Main" style="flex-grow: 1; background-color: rgb(55, 55, 55);">
+            <ui:VisualElement name="title">
+                <ui:Label name="title-label" text="DebugState" class="unity-text-element unity-label" style="background-color: rgba(0, 0, 0, 0); border-left-color: rgb(56, 56, 56); border-right-color: rgb(56, 56, 56); border-top-color: rgb(56, 56, 56); border-bottom-color: rgb(56, 56, 56); border-top-width: 10px; border-left-width: 10px; border-bottom-width: 10px; border-right-width: 10px; border-top-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 0; border-bottom-left-radius: 0; color: rgb(255, 255, 255); -unity-text-align: upper-center; font-size: 17px; -unity-font-style: bold;" />
+                <ui:Label name="description-label" class="unity-text-element unity-label" style="background-color: rgba(0, 0, 0, 0); border-left-color: rgb(56, 56, 56); border-right-color: rgb(56, 56, 56); border-top-color: rgb(56, 56, 56); border-bottom-color: rgb(56, 56, 56); border-top-width: 0; border-left-width: 0; border-bottom-width: 0; border-right-width: 0; border-top-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 0; border-bottom-left-radius: 0; margin-top: 5px; margin-right: 5px; margin-bottom: 5px; margin-left: 5px; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; white-space: pre-wrap; max-width: none; width: auto;" />
+                <ui:VisualElement name="title-button-container">
+                    <ui:VisualElement name="collapse-button">
+                        <ui:VisualElement name="icon" />
+                    </ui:VisualElement>
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement name="contents">
+            <ui:VisualElement name="divider" class="horizontal" style="background-color: rgba(0, 0, 0, 0.27);" />
+            <ui:VisualElement name="top">
+                <ui:VisualElement name="input" style="flex-wrap: wrap-reverse; border-left-color: rgba(0, 0, 0, 0); border-right-color: rgba(0, 0, 0, 0); border-top-color: rgba(0, 0, 0, 0); border-bottom-color: rgba(0, 0, 0, 0); background-color: rgba(103, 103, 103, 0.71);">
+                    <ui:VisualElement name="connector" class="connectorBox" style="height: auto; width: auto;">
+                        <ui:VisualElement name="cap" class="connectorCap" />
+                    </ui:VisualElement>
+                    <ui:Label name="type" class="unity-text-element unity-label connectorText" />
+                </ui:VisualElement>
+                <ui:VisualElement name="divider" class="horizontal" style="background-color: rgb(0, 0, 0); border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 1px; border-left-color: rgb(0, 0, 0);" />
+                <ui:VisualElement name="output">
+                    <ui:VisualElement name="connector" class="connectorBox">
+                        <ui:VisualElement name="cap" class="connectorCap" />
+                    </ui:VisualElement>
+                    <ui:Label name="type" class="unity-text-element unity-label connectorText" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+    <ui:VisualElement name="selection-border" picking-mode="Ignore" />
+</UXML>

@@ -1,12 +1,18 @@
 <engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
-    <Style src="project://database/Assets/New%20Folder/BTreeEditor/Editor/FSMView/FSMEditor.uss?fileID=7433441132597879392&amp;guid=eac24f61cce369c49803cbb97ef465da&amp;type=3#FSMEditor" />
+    <Style src="project://database/Assets/FSMEditor/Editor/FSMView/FSMEditor.uss?fileID=7433441132597879392&amp;guid=eac24f61cce369c49803cbb97ef465da&amp;type=3#FSMEditor" />
     <editor:Toolbar>
         <editor:ToolbarMenu text="Assets" />
     </editor:Toolbar>
     <FSMEditor.SplitView fixed-pane-initial-dimension="300">
         <engine:VisualElement name="left-panel" style="flex-grow: 1; background-color: rgb(56, 56, 56);">
-            <engine:Label text="Inspector" name="Label" style="flex-shrink: 0; flex-grow: 0; background-color: rgb(45, 45, 45); height: auto; color: rgb(255, 255, 255);" />
-            <FSMEditor.InspectorView />
+            <engine:VisualElement name="Inspector-container" style="flex-grow: 1;">
+                <engine:Label text="Inspector" name="Label" style="flex-shrink: 0; flex-grow: 0; background-color: rgb(45, 45, 45); height: auto; color: rgb(255, 255, 255);" />
+                <FSMEditor.InspectorView />
+            </engine:VisualElement>
+            <engine:VisualElement name="blackboard-container" style="flex-grow: 1;">
+                <engine:Label text="Blackboard" name="Label" style="flex-shrink: 0; flex-grow: 0; background-color: rgb(45, 45, 45); height: auto; color: rgb(255, 255, 255);" />
+                <engine:IMGUIContainer />
+            </engine:VisualElement>
         </engine:VisualElement>
         <engine:VisualElement name="right-panel" style="flex-grow: 1;">
             <engine:Label text="FSMView" style="height: auto; background-color: rgb(45, 45, 45); -unity-background-image-tint-color: rgb(255, 255, 255); color: rgb(255, 255, 255); -unity-text-align: middle-left; background-repeat: no-repeat no-repeat; -unity-font-style: bold;" />

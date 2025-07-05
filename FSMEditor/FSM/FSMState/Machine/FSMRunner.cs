@@ -4,11 +4,12 @@ namespace FSMEditor
 {
     public class FSMRunner : MonoBehaviour
     {
-        [SerializeField] FSMachine machine;
+        public FSMachine machine;
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Start()
         {
             machine = machine.Clone();
+            machine.Bind();
             machine.StartMachine();
         }
 

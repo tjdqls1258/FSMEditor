@@ -7,10 +7,11 @@ namespace FSMEditor
         #if UNITY_EDITOR
         [HideInInspector] public string guid;
         [HideInInspector] public Vector2 position;
-        #endif
+        [TextArea] public string description;
+#endif
 
-        public FSMState nextState;
-
+        [HideInInspector] public FSMState nextState;
+        [HideInInspector] public BlackBoard blackBoard;
         public abstract void Init();
         public abstract bool Excute();
         public virtual FSMState NextState()

@@ -23,7 +23,13 @@ namespace FSMEditor
 
             UnityEngine.Object.DestroyImmediate(editor);
             editor = Editor.CreateEditor(state.state);
-            IMGUIContainer container = new IMGUIContainer(() => { editor.OnInspectorGUI(); });
+            IMGUIContainer container = new IMGUIContainer(() => 
+            {
+                if (editor.target)
+                {
+                    editor.OnInspectorGUI();
+                }
+            });
             Add(container);
         }
 
@@ -33,7 +39,13 @@ namespace FSMEditor
 
             UnityEngine.Object.DestroyImmediate(editor);
             editor = Editor.CreateEditor(tr.transition);
-            IMGUIContainer container = new IMGUIContainer(() => { editor.OnInspectorGUI(); });
+            IMGUIContainer container = new IMGUIContainer(() => 
+            {
+                if (editor.target)
+                {
+                    editor.OnInspectorGUI();
+                }
+            });
             Add(container);
         }
     }

@@ -13,7 +13,10 @@ MonoBehaviour:
   m_Name: DebugState
   m_EditorClassIdentifier: 
   guid: 9fa9b36252f9c8545a348ee056b21384
-  position: {x: 487.47998, y: 139.20001}
+  position: {x: 543.66406, y: 144.8}
+  description: 
+  blackboard:
+    controllToObject: {fileID: 0}
   transitionList:
   - {fileID: 5551811169006609}
   message: Hello Debug 2
@@ -30,13 +33,15 @@ MonoBehaviour:
   m_Name: FSM
   m_EditorClassIdentifier: 
   root: {fileID: 7522797386459159806}
-  isRun: 0
   states:
   - {fileID: 3426030327328244716}
   - {fileID: -6789997587696447579}
   transitions:
   - {fileID: 2506246963708880637}
   - {fileID: 5551811169006609}
+  blackBoard:
+    controllToObject: {fileID: 0}
+  isRun: 0
 --- !u!114 &5551811169006609
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -50,9 +55,12 @@ MonoBehaviour:
   m_Name: WaitTransition
   m_EditorClassIdentifier: 
   guid: 647d7ff93cee04d418a33becd83ee535
-  position: {x: 303.96008, y: 255.76}
+  position: {x: 368.79993, y: 303.17398}
+  description: "2\uCD08\uC758 \uAE30\uB2E4\uB9BC"
   nextState: {fileID: 3426030327328244716}
-  duration: 3
+  blackBoard:
+    controllToObject: {fileID: 0}
+  duration: 2
 --- !u!114 &2506246963708880637
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -66,8 +74,11 @@ MonoBehaviour:
   m_Name: WaitTransition
   m_EditorClassIdentifier: 
   guid: 860aaa38c86991c469b59e74b8381c30
-  position: {x: 337.9601, y: 24.000008}
+  position: {x: 360.8, y: 0.7999878}
+  description: "3\uCD08\uC758 \uAE30\uB2E4\uB9BC"
   nextState: {fileID: -6789997587696447579}
+  blackBoard:
+    controllToObject: {fileID: 0}
   duration: 3
 --- !u!114 &3426030327328244716
 MonoBehaviour:
@@ -82,8 +93,12 @@ MonoBehaviour:
   m_Name: DebugState
   m_EditorClassIdentifier: 
   guid: 423cd739e6d4a6840b128ff8c33a31f1
-  position: {x: 174.40004, y: 100.80001}
+  position: {x: 132.646, y: 121.599945}
+  description: "\uB514\uBC84\uADF8 \uB85C\uADF8 : Hello Debug 1 "
+  blackboard:
+    controllToObject: {fileID: 0}
   transitionList:
+  - {fileID: 2506246963708880637}
   - {fileID: 2506246963708880637}
   message: Hello Debug 1
 --- !u!114 &7522797386459159806
@@ -99,5 +114,5 @@ MonoBehaviour:
   m_Name: FSMRoot
   m_EditorClassIdentifier: 
   guid: 2760dab9fcbdffc46aa3157ef8a6be82
-  position: {x: 2.399994, y: 24}
+  position: {x: -103.19998, y: 96.000015}
   startState: {fileID: 3426030327328244716}

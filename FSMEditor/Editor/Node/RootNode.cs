@@ -1,7 +1,10 @@
 #if UNITY_EDITOR
 using System;
+using UnityEditor;
 using UnityEditor.Experimental.GraphView;
+using UnityEditor.UIElements;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace FSMEditor
 {
@@ -11,7 +14,7 @@ namespace FSMEditor
         public Port inport;
         public Port outport;
 
-        public RootNode(FSMRoot root)
+        public RootNode(FSMRoot root) : base("Assets/FSMEditor/Editor/Node/NodeView.uxml")
         {
             focusable = true;
             this.root = root;
@@ -22,6 +25,12 @@ namespace FSMEditor
             style.top = root.position.y;
 
             CreateOutPorts();
+            SetipClasses();
+        }
+
+        private void SetipClasses()
+        {
+            AddToClassList("root");
         }
 
         private void CreateOutPorts()
@@ -39,8 +48,10 @@ namespace FSMEditor
         public override void SetPosition(Rect newPos)
         {
             base.SetPosition(newPos);
+            Undo.RecordObject(root, "FSM Editor (Set Position)");
             root.position.x = newPos.x;
             root.position.y = newPos.y;
+            EditorUtility.SetDirty(root);
         }
         public override void OnSelected()
         {
