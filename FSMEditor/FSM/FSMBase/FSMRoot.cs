@@ -23,5 +23,10 @@ namespace FSMEditor
             state.startState = startState.Clone();
             return state;
         }
+
+        public virtual void BindingData(params object[] data)
+        {
+            //Data Binding
+        }
     }
 }

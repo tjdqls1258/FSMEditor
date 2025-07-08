@@ -1,9 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
-using UnityEngine.Windows;
-
-
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -51,17 +48,23 @@ namespace FSMEditor
         }
 
         //필요시 값 추가
-        public void Bind()
+        public void Bind(params object[] data)
         {
             Travers((r, s, t) =>
             {
+                if(r != null)
+                {
+                    r.BindingData(data);
+                }
                 if(s != null)
                 {
                     s.blackboard = blackBoard;
+                    s.BindingData(data);
                 }
                 if(t != null)
                 {
                     t.blackBoard = blackBoard;
+                    t.BindingData(data);
                 }
             });
         }

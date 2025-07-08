@@ -55,7 +55,7 @@ MonoBehaviour:
   m_Name: WaitTransition
   m_EditorClassIdentifier: 
   guid: 647d7ff93cee04d418a33becd83ee535
-  position: {x: 368.79993, y: 303.17398}
+  position: {x: 265.59998, y: 401.6}
   description: "2\uCD08\uC758 \uAE30\uB2E4\uB9BC"
   nextState: {fileID: 3426030327328244716}
   blackBoard:
@@ -114,5 +114,5 @@ MonoBehaviour:
   m_Name: FSMRoot
   m_EditorClassIdentifier: 
   guid: 2760dab9fcbdffc46aa3157ef8a6be82
-  position: {x: -103.19998, y: 96.000015}
+  position: {x: -143.99994, y: 129.6}
   startState: {fileID: 3426030327328244716}

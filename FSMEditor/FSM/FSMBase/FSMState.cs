@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-using static Unity.VisualScripting.Metadata;
 
 namespace FSMEditor
 {
@@ -45,6 +44,11 @@ namespace FSMEditor
             var state = Instantiate(this);
             state.transitionList = transitionList.ConvertAll(x=>x.Clone());
             return state;
+        }
+
+        public virtual void BindingData(params object[] data)
+        {
+            //Data Binding
         }
     }
 }

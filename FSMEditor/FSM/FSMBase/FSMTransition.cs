@@ -25,5 +25,10 @@ namespace FSMEditor
             Init();
             return Instantiate(this);
         }
+
+        public virtual void BindingData(params object[] data)
+        {
+            //Data Binding
+        }
     }
 }
