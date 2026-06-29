@@ -3,48 +3,40 @@ using UnityEngine;
 
 namespace Util_Patten.FSM
 {
-    public abstract class Context
+    public interface IContext { }
+
+    public abstract class Context<T> : IContext where T : Context<T>
     {
         public virtual void Init() { }
+        public StateSO<T> currentState { get; set; }
     }
 
-    public abstract class StateMachine<T, TState> : MonoBehaviour 
-        where T : Context
-        where TState : StateSO<T>
+    public static class StateMachine<T> where T : Context<T>
     {
-        [Header("FSM Settings")]
-        public TState startState;
-
-        [SerializeField] protected T context;
-        [Tooltip("실행 중 상태 확인용(디버깅)"), SerializeField]
-        public TState currentState;
-
-
-        protected virtual void Start(T context, TState startState)
+        public static void StartMachine(T context)
         {
-            if (startState != null && context != null)
+            if (context != null && context.currentState != null)
             {
-                currentState = startState;
-                startState.OnEnter(context);
+                context.currentState.OnEnter(context);
             }
         }
 
-        protected virtual void Update(T context)
+        public static void UpdateMachine(T context)
         {
-            if (currentState == null) return;
+            if (context.currentState == null) return;
 
-            var nextState = currentState.UpdateState(context) as TState;
+            var nextState = context.currentState.UpdateState(context);
 
-            if (nextState != currentState)
-                ForeChangeState(nextState);
+            if (nextState != context.currentState)
+                ForeChangeState(context, nextState);
 
         }
 
-        public virtual void ForeChangeState(TState state)
+        public static void ForeChangeState(T context, StateSO<T> state)
         {
-            currentState?.OnExit(context);
-            currentState = state;
-            currentState.OnEnter(context);
+            context.currentState?.OnExit(context);
+            context.currentState = state;
+            context.currentState?.OnEnter(context);
         }
     }
 }

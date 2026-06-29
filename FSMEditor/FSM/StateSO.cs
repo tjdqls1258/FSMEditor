@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Util_Patten.FSM
 {
-    public class StateSO<T> : ScriptableObject where T : Context
+    public class StateSO<T> : ScriptableObject where T : Context<T>
     {
 #if UNITY_EDITOR
         public Vector2 nodePosition;
@@ -45,7 +45,7 @@ namespace Util_Patten.FSM
     }
 
     [Serializable]
-    public class Transition<T> where T : Context
+    public class Transition<T> where T : Context<T>
     {
         public ConditionSO<T> condition;
         public StateSO<T> trueState;

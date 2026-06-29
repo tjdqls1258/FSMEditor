@@ -40,7 +40,7 @@ namespace Util_Patten.FSM.Editor
         {
             Toolbar toolbar = new Toolbar();
 
-            var contextTypes = TypeCache.GetTypesDerivedFrom<Context>().Where(t => !t.IsAbstract).ToList();
+            var contextTypes = TypeCache.GetTypesDerivedFrom<IContext>().Where(t => !t.IsAbstract).ToList();
             List<string> typeNames = contextTypes.Select(t => t.Name).ToList();
 
             DropdownField contextDropdown = new DropdownField("Target Context", typeNames, 0);
@@ -72,28 +72,54 @@ namespace Util_Patten.FSM.Editor
             if (nodes.Count == 0) return;
 
             Type stateBaseType = typeof(StateSO<>).MakeGenericType(graphView.CurrentContextType);
-            Type specificStateType = TypeCache.GetTypesDerivedFrom(stateBaseType).FirstOrDefault(t => !t.IsAbstract);
+            Type specificStateType = TypeCache.GetTypesDerivedFrom(stateBaseType)
+                .FirstOrDefault(t => !t.IsAbstract);
             Type actionBaseType = typeof(ActionSO<>).MakeGenericType(graphView.CurrentContextType);
             Type transitionBaseType = typeof(Transition<>).MakeGenericType(graphView.CurrentContextType);
 
-            Dictionary<FSMStateNode, ScriptableObject> nodeToSOMap = new Dictionary<FSMStateNode, ScriptableObject>();
+            string folderPath = "Assets/FSM_Data";
+            if (!AssetDatabase.IsValidFolder(folderPath))
+                AssetDatabase.CreateFolder("Assets", "FSM_Data");
+
+            Dictionary<FSMStateNode, ScriptableObject> nodeToSOMap =
+                new Dictionary<FSMStateNode, ScriptableObject>();
 
             foreach (var node in nodes)
             {
                 ScriptableObject so;
+
                 if (node.BoundSO != null)
                 {
                     so = node.BoundSO;
+
+                    string assetPath = AssetDatabase.GetAssetPath(so);
+                    string expectedName = $"{node.StateName}";
+
+                    if (!string.IsNullOrEmpty(assetPath) && so.name != expectedName)
+                    {
+                        so.name = expectedName;
+                        AssetDatabase.RenameAsset(assetPath, expectedName);
+                    }
                 }
                 else
                 {
-                    so = ScriptableObject.CreateInstance(specificStateType);
-                    string folderPath = "Assets/FSM_Data";
-                    if (!AssetDatabase.IsValidFolder(folderPath)) AssetDatabase.CreateFolder("Assets", "FSM_Data");
+                    string expectedPath = $"{folderPath}/{node.StateName}_{node.GUID.Substring(0, 5)}.asset";
+                    ScriptableObject existing =
+                        AssetDatabase.LoadAssetAtPath<ScriptableObject>(expectedPath);
 
-                    AssetDatabase.CreateAsset(so, $"{folderPath}/{node.StateName}_{node.GUID.Substring(0, 5)}.asset");
-                    node.BoundSO = so;
+                    if (existing != null)
+                    {
+                        so = existing;
+                        node.BoundSO = so;
+                    }
+                    else
+                    {
+                        so = ScriptableObject.CreateInstance(specificStateType);
+                        AssetDatabase.CreateAsset(so, expectedPath);
+                        node.BoundSO = so;
+                    }
                 }
+
                 nodeToSOMap.Add(node, so);
             }
 
@@ -105,9 +131,7 @@ namespace Util_Patten.FSM.Editor
 
                 Array actionArray = Array.CreateInstance(actionBaseType, node.actionFields.Count);
                 for (int i = 0; i < node.actionFields.Count; i++)
-                {
                     actionArray.SetValue(node.actionFields[i].value, i);
-                }
                 stateBaseType.GetField("actions").SetValue(so, actionArray);
 
                 Array transArray = Array.CreateInstance(transitionBaseType, node.transitions.Count);
@@ -118,16 +142,20 @@ namespace Util_Patten.FSM.Editor
 
                     transitionBaseType.GetField("condition").SetValue(transInst, tData.conditionField.value);
 
-                    if (tData.truePort.connections.Count() > 0)
+                    if (tData.truePort.connections.Any())
                     {
                         var targetNode = tData.truePort.connections.First().input.node as FSMStateNode;
-                        transitionBaseType.GetField("trueState").SetValue(transInst, nodeToSOMap[targetNode]);
+                        if (targetNode != null && nodeToSOMap.ContainsKey(targetNode))
+                            transitionBaseType.GetField("trueState")
+                                .SetValue(transInst, nodeToSOMap[targetNode]);
                     }
 
-                    if (tData.falsePort.connections.Count() > 0)
+                    if (tData.falsePort.connections.Any())
                     {
                         var targetNode = tData.falsePort.connections.First().input.node as FSMStateNode;
-                        transitionBaseType.GetField("falseState").SetValue(transInst, nodeToSOMap[targetNode]);
+                        if (targetNode != null && nodeToSOMap.ContainsKey(targetNode))
+                            transitionBaseType.GetField("falseState")
+                                .SetValue(transInst, nodeToSOMap[targetNode]);
                     }
 
                     transArray.SetValue(transInst, i);
@@ -139,6 +167,7 @@ namespace Util_Patten.FSM.Editor
 
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
+            Debug.Log($"Success Save");
         }
 
         private void LoadData()
@@ -177,7 +206,7 @@ namespace Util_Patten.FSM.Editor
                     foreach (var action in actions)
                     {
                         node.AddActionField();
-                        node.actionFields.Last().value = (UnityEngine.Object)action; // 필드에 에셋 끼워넣기
+                        node.actionFields.Last().value = (UnityEngine.Object)action;
                     }
                 }
 
