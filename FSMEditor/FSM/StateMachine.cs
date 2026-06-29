@@ -9,6 +9,8 @@ namespace Util_Patten.FSM
     {
         public virtual void Init() { }
         public StateSO<T> currentState { get; set; }
+
+        public virtual void PreExecute() { } //업데이트 바로 전 호출
     }
 
     public static class StateMachine<T> where T : Context<T>

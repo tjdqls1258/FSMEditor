@@ -16,18 +16,21 @@ namespace Util_Patten.FSM
         {
             private readonly List<T> m_contextList = new List<T>();
 
-            public void AddContext(T ctx)
+            public void AddContext(T context)
             {
-                m_contextList.Add(ctx);
-                StateMachine<T>.StartMachine(ctx);
+                m_contextList.Add(context);
+                StateMachine<T>.StartMachine(context);
             }
 
-            public void RemoveContext(T ctx) => m_contextList.Remove(ctx);
+            public void RemoveContext(T context) => m_contextList.Remove(context);
 
             public void RunAll()
             {
-                foreach (var ctx in m_contextList)
-                    StateMachine<T>.UpdateMachine(ctx);
+                foreach (var context in m_contextList)
+                {
+                    context.PreExecute();
+                    StateMachine<T>.UpdateMachine(context);
+                }
             }
         }
 
@@ -37,6 +40,11 @@ namespace Util_Patten.FSM
         {
             foreach (var context in m_contextRunners.Values)
                 context.RunAll();
+        }
+
+        public void UpdateContextSingle<T>(T context) where T : Context<T>
+        {
+            StateMachine<T>.UpdateMachine(context);
         }
 
         public void AddContext<T>(T context) where T : Context<T>
